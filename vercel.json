@@ -12,11 +12,12 @@
       "dest": "src/index.ts"
     },
     {
-      "handle": "filesystem"
+      "src": "/app.js",
+      "dest": "/public/app.js"
     },
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/public/index.html"
     }
   ]
 }
