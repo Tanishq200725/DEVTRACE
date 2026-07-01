@@ -7,12 +7,12 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const publicPath = path.resolve('public');
+const publicPath = path.resolve(process.cwd(), 'public');
 app.use(express.static(publicPath));
 
-const usersDatabase = new Map<string, any>();
+const usersDatabase = new Map();
 
-app.post('/api/auth/register', (req: any, res: any) => {
+app.post('/api/auth/register', (req, res) => {
   try {
     const { username, password } = req.body;
     if (!username || !password) {
@@ -28,12 +28,12 @@ app.post('/api/auth/register', (req: any, res: any) => {
 
     usersDatabase.set(username.toLowerCase(), { ...newUser, password });
     return res.json({ success: true, user: newUser });
-  } catch (err: any) {
+  } catch (err) {
     return res.status(500).json({ success: false, error: err.message });
   }
 });
 
-app.post('/api/auth/login', (req: any, res: any) => {
+app.post('/api/auth/login', (req, res) => {
   try {
     const { username, password } = req.body;
     const account = usersDatabase.get(username?.toLowerCase());
@@ -50,12 +50,12 @@ app.post('/api/auth/login', (req: any, res: any) => {
         joinedSequence: account.joinedSequence
       }
     });
-  } catch (err: any) {
+  } catch (err) {
     return res.status(500).json({ success: false, error: err.message });
   }
 });
 
-app.get('/api/timeline', (req: any, res: any) => {
+app.get('/api/timeline', (req, res) => {
   try {
     const items = [
       { id: 1, title: "Initial System Framework Injection", author: "Tanishq Tyagi", date: "2026-06-28", confidenceScore: 98, hash: "ae084ff" },
@@ -63,21 +63,16 @@ app.get('/api/timeline', (req: any, res: any) => {
       { id: 3, title: "Refactored Core Interface Geometry", author: "System Kernel", date: "2026-07-01", confidenceScore: 82, hash: "7f9bcba" }
     ];
     return res.json({ success: true, items: items });
-  } catch (err: any) {
+  } catch (err) {
     return res.status(500).json({ success: false, error: err.message });
   }
 });
 
-app.get('/api/export/csv', (req: any, res: any) => {
+app.get('/api/export/csv', (req, res) => {
   res.setHeader('Content-Type', 'text/csv');
   res.setHeader('Content-Disposition', 'attachment; filename=devtrace_forensic_log.csv');
   const csvContent = "id,title,author,date,confidence\n1,Initial Injection,Tanishq Tyagi,2026-06-28,98\n2,Pioneer Protocol,Tanishq Tyagi,2026-06-30,94\n3,Geometry Patch,System Kernel,2026-07-01,82";
   return res.send(csvContent);
 });
 
-app.listen(PORT, () => {
-  console.log(`📡 Platform server deployed online at port: ${PORT}`);
-});
-// Keep your existing app.listen block for local development fallback, 
-// but add this exact export statement at the absolute bottom line:
 export default app;
