@@ -75,11 +75,6 @@ app.get('/api/export/csv', (req: any, res: any) => {
   return res.send(csvContent);
 });
 
-// Fully compliant catch-all parameter for clean spa style asset loading
-app.get('/:matchingPath*', (req: express.Request, res: express.Response) => {
-  res.sendFile(path.join(publicPath, 'index.html'));
-});
-
 app.listen(PORT, () => {
   console.log(`📡 Platform server deployed online at port: ${PORT}`);
 });
