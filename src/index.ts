@@ -83,3 +83,6 @@ app.get('/:matchingPath*', (req: express.Request, res: express.Response) => {
 app.listen(PORT, () => {
   console.log(`📡 Platform server deployed online at port: ${PORT}`);
 });
+// Keep your existing app.listen block for local development fallback, 
+// but add this exact export statement at the absolute bottom line:
+export default app;
